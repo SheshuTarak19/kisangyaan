@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Scheduling Form</title>
+    <!-- Use Bootstrap 4 for faster development and responsiveness -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #333;
+            color: #fff;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .alert {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Task Scheduling Form</h2>
+        <form id="taskForm">
+            <div class="form-group">
+                <label for="taskName">Task Name:</label>
+                <input type="text" class="form-control" id="taskName" required>
+            </div>
+            <div class="form-group">
+                <label for="taskDescription">Description:</label>
+                <input type="text" class="form-control" id="taskDescription" required>
+            </div>
+            <div class="form-group">
+                <label for="taskDueDate">Due Date:</label>
+                <input type="date" class="form-control" id="taskDueDate" required>
+            </div>
+            <div class="form-group">
+                <label for="taskDueTime">Due Time:</label>
+                <input type="time" class="form-control" id="taskDueTime" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Task</button>
+        </form>
+        
+        <h3 class="mt-5">Scheduled Tasks</h3>
+        <table class="table table-dark table-striped">
+            <thead>
+                <tr>
+                    <th>Task Name</th>
+                    <th>Description</th>
+                    <th>Due Date</th>
+                    <th>Due Time</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="taskTableBody">
+                <!-- Tasks will be dynamically added here -->
+            </tbody>
+        </table>
+
+        <div id="notificationSection"></div>
+    </div>
+
+    <script>
+        const taskForm = document.getElementById('taskForm');
+        const taskTableBody = document.getElementById('taskTableBody');
+        const notificationSection = document.getElementById('notificationSection');
+
+        taskForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            addTask();
+        });
+
+        function addTask() {
+            const taskName = document.getElementById('taskName').value;
+            const taskDescription = document.getElementById('taskDescription').value;
+            const taskDueDate = document.getElementById('taskDueDate').value;
+            const taskDueTime = document.getElementById('taskDueTime').value;
+
+            const newRow = taskTableBody.insertRow();
+            newRow.innerHTML = `
+                <td>${taskName}</td>
+                <td>${taskDescription}</td>
+                <td>${taskDueDate}</td>
+                <td>${taskDueTime}</td>
+                <td><button class="btn btn-danger btn-sm" onclick="deleteTask(this)">Delete</button></td>
+            `;
+
+            showNotification('Task added successfully!', 'success');
+            taskForm.reset();
+        }
+
+        function deleteTask(button) {
+            const row = button.closest('tr');
+            row.remove();
+            showNotification('Task deleted!', 'warning');
+        }
+
+        function showNotification(message, type) {
+            notificationSection.innerHTML = `<div class='alert alert-${type}'>${message}</div>`;
+            setTimeout(() => notificationSection.innerHTML = "", 3000);
+        }
+    </script>
+</body>
+</html>

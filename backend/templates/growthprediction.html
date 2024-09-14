@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Growth Data</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            padding: 20px;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 30px;
+        }
+        table th {
+            cursor: pointer;
+        }
+        .carousel-inner img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Page Header -->
+        <div class="header mb-4">
+            <h1>Crop Growth Data</h1>
+        </div>
+
+        <!-- Dropdown for selecting crop type -->
+        <div class="form-group">
+            <label for="cropSelector">Select Crop Type:</label>
+            <select id="cropSelector" class="form-control">
+                <option value="all">All Crops</option>
+                <option value="rice">Rice</option>
+                <option value="wheat">Wheat</option>
+            </select>
+        </div>
+
+        <!-- Line Chart -->
+        <div class="chart-container mb-4">
+            <canvas id="lineChart"></canvas>
+        </div>
+
+        <!-- Bar Chart -->
+        <div class="chart-container mb-4">
+            <canvas id="barChart"></canvas>
+        </div>
+
+        <!-- Data Table -->
+        <div class="mb-4">
+            <h5>Growth Data Table</h5>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th onclick="sortTable(0)">Crop Name</th>
+                        <th onclick="sortTable(1)">Growth Stage</th>
+                        <th onclick="sortTable(2)">Growth Metrics</th>
+                        <th onclick="sortTable(3)">Date of Observation</th>
+                    </tr>
+                </thead>
+                <tbody id="dataTable">
+                    <tr>
+                        <td>Rice</td>
+                        <td>Germination</td>
+                        <td>Height: 10cm, Leaf Count: 5</td>
+                        <td>2023-01-15</td>
+                    </tr>
+                    <tr>
+                        <td>Wheat</td>
+                        <td>Vegetative</td>
+                        <td>Height: 20cm, Leaf Count: 15</td>
+                        <td>2023-02-20</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Image Gallery -->
+        <div id="carouselExampleControls" class="carousel slide mb-4" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="image1.jpg" alt="Germination Stage">
+                </div>
+                <div class="carousel-item">
+                    <img src="image2.jpg" alt="Vegetative Stage">
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Initial Line Chart for Crop Growth
+        var ctx1 = document.getElementById('lineChart').getContext('2d');
+        var lineChart = new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March'],
+                datasets: [{
+                    label: 'Rice Growth Over Time',
+                    data: [10, 20, 30],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    fill: false
+                }]
+            }
+        });
+
+        // Initial Bar Chart for Crop Comparison
+        var ctx2 = document.getElementById('barChart').getContext('2d');
+        var barChart = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['Rice', 'Wheat'],
+                datasets: [{
+                    label: 'Growth Rate Comparison',
+                    data: [30, 20],
+                    backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)'],
+                    borderColor: ['rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)'],
+                    borderWidth: 1
+                }]
+            }
+        });
+
+        // Dynamic crop data update for Line Chart
+        document.getElementById('cropSelector').addEventListener('change', function() {
+            const selectedCrop = this.value;
+            let newData, newLabel;
+
+            if (selectedCrop === 'rice') {
+                newData = [10, 20, 30];
+                newLabel = 'Rice Growth Over Time';
+            } else if (selectedCrop === 'wheat') {
+                newData = [15, 25, 35];
+                newLabel = 'Wheat Growth Over Time';
+            } else {
+                newData = [12, 22, 32];
+                newLabel = 'All Crops Growth Over Time';
+            }
+
+            lineChart.data.datasets[0].data = newData;
+            lineChart.data.datasets[0].label = newLabel;
+            lineChart.update();
+        });
+
+        // Sort Table functionality
+        function sortTable(column) {
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = document.querySelector("table");
+            switching = true;
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("TD")[column];
+                    y = rows[i + 1].getElementsByTagName("TD")[column];
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmAI Decision Support</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <style>
+        /* Dark theme styling */
+        body {
+            background-color: #212529;
+            color: #f8f9fa;
+            display: flex;
+        }
+        
+        h1, h2, label {
+            color: #f8f9fa;
+        }
+        
+        .form-control, .form-control-file {
+            background-color: #343a40;
+            color: #f8f9fa;
+            border: none;
+        }
+        
+        /* Sidebar styling */
+        #sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #343a40;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            transition: 0.3s;
+            overflow-y: auto;
+        }
+
+        #sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #sidebar ul li a {
+            color: white;
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+        }
+
+        #sidebar ul li a:hover {
+            background-color: #495057;
+        }
+
+        #sidebar .close-btn {
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        .container {
+            margin-left: 260px;
+            padding: 20px;
+            max-width: 800px;
+        }
+
+        #nav-toggle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .form-group img {
+            max-width: 100px;
+        }
+
+        .bg-dark-img {
+            background: url() no-repeat center center;
+            background-size: cover;
+            height: 400px;
+            border-radius: 8px;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+        }
+
+        /* Chatbot styling */
+        #chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            background-color: #343a40;
+            color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        #chatbot-header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #chatbot-messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        #chatbot-input {
+            display: flex;
+            border-top: 1px solid #ddd;
+        }
+
+        #chatbot-input textarea {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 0;
+            resize: none;
+            background-color: #343a40;
+            color: #f8f9fa;
+        }
+
+        #chatbot-input button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Toggle button to open sidebar -->
+    <button id="nav-toggle" class="open-btn" onclick="toggleNav()">☰ Open Sidebar</button>
+
+    <div id="sidebar" class="sidebar">
+        <h2>FarmAI App <span class="close-btn" onclick="toggleNav()">×</span></h2>
+        <ul>
+            <li><a href="waterStressForm">Water Stress Monitoring and Smart Irrigation</a></li>
+            <li><a href="growthTrackingForm">Growth Tracking</a></li>
+            <li><a href="diseaseDetectionForm">Disease Detection</a></li>
+            <li><a href="environmentalImpactForm">Environmental Impact Analysis</a></li>
+            <li><a href="automatedDataForm">Automated Data Collection</a></li>
+            <li><a href="cropHealthForm">Crop Health Imaging</a></li>
+            <li><a href="growthPredictionForm">Growth Prediction Models</a></li>
+            <li><a href="supplyChainForm">Supply Chain Optimization</a></li>
+            <li><a href="marketForecastingForm">Market Sales Forecasting</a></li>
+            <li><a href="automatedTasksForm">Automated Task Management</a></li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <h1>Farm Decision Support System</h1>
+
+        <!-- Background Image Section -->
+      <!-- <div class="bg-dark-img mb-4">
+          <img src="agriai.jpg"alt="Description">
+          
+        </div> --> 
+
+        <!-- Form for farm data input -->
+        <form action="/submit-farm-data" method="post" enctype="multipart/form-data">
+            
+            <!-- Language Selection -->
+            <div class="form-group">
+                <label for="language">Select Language:</label>
+                <select id="language" name="language" class="form-control">
+                    <option value="english">English</option>
+                    <option value="hindi">Hindi</option>
+                    <option value="telugu">Telugu</option>
+                </select>
+            </div>
+
+            <!-- Crop Type -->
+            <div class="form-group">
+                <label for="cropType">Select Crop Type:</label>
+                <select id="cropType" name="cropType" class="form-control">
+                    <option value="wheat">Wheat</option>
+                    <option value="rice">Rice</option>
+                    <option value="maize">Maize</option>
+                    <option value="soybeans">Soybeans</option>
+                    <option value="cotton">Cotton</option>
+                </select>
+            </div>
+
+            <!-- Days Since Planting -->
+            <div class="form-group">
+                <label for="daysSincePlanting">Days Since Planting:</label>
+                <input type="number" id="daysSincePlanting" name="daysSincePlanting" class="form-control" required>
+            </div>
+
+            <!-- Water Stress Monitoring -->
+            <div id="waterStressForm">
+                <h2>Water Stress Monitoring and Smart Irrigation</h2>
+                <div class="form-group">
+                    <label for="soilMoisture">Soil Moisture Level (%):</label>
+                    <input type="number" id="soilMoisture" name="soilMoisture" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="irrigationSystem">Irrigation System:</label>
+                    <select id="irrigationSystem" name="irrigationSystem" class="form-control" required>
+                        <option value="drip">Drip Irrigation</option>
+                        <option value="sprinkler">Sprinkler Irrigation</option>
+                        <option value="manual">Manual Watering</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Growth Tracking -->
+            <div id="growthTrackingForm">
+                <h2>Growth Tracking</h2>
+                <div class="form-group">
+                    <label for="growthStage">Current Growth Stage:</label>
+                    <select id="growthStage" name="growthStage" class="form-control" required>
+                        <option value="germination">Germination</option>
+                        <option value="vegetative">Vegetative</option>
+                        <option value="flowering">Flowering</option>
+                        <option value="fruiting">Fruiting</option>
+                        <option value="maturity">Maturity</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Disease Detection with Image Upload and Voice Input -->
+            <div id="diseaseDetectionForm">
+                <h2>Disease Detection</h2>
+                <div class="form-group">
+                    <label for="diseaseSymptoms">Describe Disease Symptoms:</label>
+                    <textarea id="diseaseSymptoms" name="diseaseSymptoms" class="form-control" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="diseaseImage">Upload Image of Affected Area:</label>
+                    <input type="file" id="diseaseImage" name="diseaseImage" class="form-control-file">
+                </div>
+                <div class="form-group">
+                    <label for="voiceInput">Speak Symptoms:</label>
+                    <button id="startVoice" type="button" class="btn btn-primary">🎙 Start Voice Input</button>
+                    <p id="voiceOutput">Voice input will appear here...</p>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Chatbot Container -->
+    <div id="chatbot-container">
+        <div id="chatbot-header">Chat with us!</div>
+        <div id="chatbot-messages">
+            <!-- Messages will appear here -->
+        </div>
+        <div id="chatbot-input">
+            <textarea id="chat-input" rows="3" placeholder="Type your message..."></textarea>
+            <button id="send-message">Send</button>
+        </div>
+    </div>
+
+    <!-- Bootstrap and JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Toggle sidebar visibility
+        function toggleNav() {
+            let sidebar = document.getElementById('sidebar');
+            sidebar.style.left = sidebar.style.left === '0px' ? '-250px' : '0px';
+        }
+
+        // Placeholder for voice recognition (can be integrated with Web Speech API)
+        document.getElementById('startVoice').addEventListener('click', () => {
+            document.getElementById('voiceOutput').innerText = 'Voice recognition started... (not implemented)';
+        });
+
+        // Chatbot functionality
+        document.getElementById('send-message').addEventListener('click', () => {
+            let message = document.getElementById('chat-input').value;
+            let messages = document.getElementById('chatbot-messages');
+
+            if (message.trim()) {
+                let messageElement = document.createElement('div');
+                messageElement.textContent = message;
+                messageElement.classList.add('message');
+                messages.appendChild(messageElement);
+                document.getElementById('chat-input').value = '';
+                messages.scrollTop = messages.scrollHeight;
+            }
+        });
+    </script>
+</body>
+
+</html>

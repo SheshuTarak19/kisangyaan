@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Environmental Impact Overview</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+        }
+        header {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        section {
+            background-color: #ffffff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #007bff;
+        }
+        .table th {
+            background-color: #e9ecef;
+        }
+        .alert-info {
+            font-size: 1.1em;
+            padding: 15px;
+        }
+        button {
+            margin-right: 10px;
+        }
+        .chart-container {
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <!-- Page Header -->
+        <header class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Environmental Impact Overview</h1>
+            <select class="form-control w-25">
+                <option>Choose Factor/Region</option>
+                <option>Factor 1</option>
+                <option>Region 1</option>
+            </select>
+        </header>
+
+        <!-- Impact Overview -->
+        <section>
+            <h2>Impact Overview</h2>
+            <p>Summary of key environmental impact metrics like emissions, pollution levels, and resource usage.</p>
+        </section>
+
+        <!-- Graphs and Charts -->
+        <section class="chart-container">
+            <h2>Graphs and Charts</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <canvas id="lineChart" width="400" height="200"></canvas>
+                </div>
+                <div class="col-md-6">
+                    <canvas id="barChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Data Table -->
+        <section>
+            <h2>Data Table</h2>
+            <table class="table table-hover table-bordered text-center">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Region/Category</th>
+                        <th>Emission Levels</th>
+                        <th>Pollution Index</th>
+                        <th>Resource Usage</th>
+                        <th>Date of Data</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Region 1</td>
+                        <td>100</td>
+                        <td>50</td>
+                        <td>200</td>
+                        <td>2023-01-01</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Language Support -->
+        <section>
+            <h2>Language Support</h2>
+            <select class="form-control w-25">
+                <option>English</option>
+                <option>Spanish</option>
+            </select>
+        </section>
+
+        <!-- Alerts/Notifications -->
+        <section>
+            <h2>Alerts/Notifications</h2>
+            <div class="alert alert-info">
+                Important updates related to environmental impact.
+            </div>
+        </section>
+
+        <!-- Export Options -->
+        <section>
+            <h2>Export Options</h2>
+            <button class="btn btn-primary">Export as CSV</button>
+            <button class="btn btn-primary">Export as PDF</button>
+        </section>
+    </div>
+
+    <script>
+        // Line Chart
+        const lineData = {
+            labels: ['January', 'February', 'March'],
+            datasets: [{
+                label: 'CO2 Emissions',
+                data: [65, 59, 80],
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderWidth: 2
+            }]
+        };
+
+        const barData = {
+            labels: ['Region 1', 'Region 2', 'Region 3'],
+            datasets: [{
+                label: 'Pollution Index',
+                data: [12, 19, 3],
+                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                borderColor: 'rgba(153, 102, 255, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        // Initialize Line Chart
+        new Chart(document.getElementById('lineChart'), {
+            type: 'line',
+            data: lineData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                }
+            }
+        });
+
+        // Initialize Bar Chart
+        new Chart(document.getElementById('barChart'), {
+            type: 'bar',
+            data: barData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

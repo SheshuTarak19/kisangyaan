@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Growth Tracking</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 20px;
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        h1, h2 {
+            color: #007bff;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+        footer {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="mb-4">
+        <h1>Crop Growth Tracking</h1>
+        <select class="form-control w-25">
+            <option>Rice</option>
+            <option>Wheat</option>
+            <option>Corn</option>
+            <option>Soybean</option>
+        </select>
+    </header>
+
+    <!-- Growth Overview Section -->
+    <section class="mb-4">
+        <h2>Growth Overview</h2>
+        <p><strong>Stage:</strong> Germination | <strong>Height:</strong> 10 cm | <strong>Leaves:</strong> 5 | <strong>Status:</strong> Healthy</p>
+    </section>
+
+    <!-- Graphs and Charts Section -->
+    <section class="mb-4">
+        <h2>Graphs and Charts</h2>
+        <div class="chart-container">
+            <canvas id="growthChart"></canvas>
+        </div>
+        <div class="chart-container mt-3">
+            <canvas id="healthChart"></canvas>
+        </div>
+    </section>
+
+    <!-- Growth Data Table Section -->
+    <section class="mb-4">
+        <h2>Growth Data Table</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Growth Stage</th>
+                    <th>Plant Height (cm)</th>
+                    <th>Leaf Count</th>
+                    <th>Health Status</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Germination</td>
+                    <td>10</td>
+                    <td>5</td>
+                    <td>Healthy</td>
+                    <td>2023-10-01</td>
+                </tr>
+                <tr>
+                    <td>Vegetative</td>
+                    <td>25</td>
+                    <td>8</td>
+                    <td>Healthy</td>
+                    <td>2023-10-05</td>
+                </tr>
+                <tr>
+                    <td>Flowering</td>
+                    <td>50</td>
+                    <td>12</td>
+                    <td>Healthy</td>
+                    <td>2023-10-10</td>
+                </tr>
+                <tr>
+                    <td>Ripening</td>
+                    <td>75</td>
+                    <td>16</td>
+                    <td>Slight Stress</td>
+                    <td>2023-10-15</td>
+                </tr>
+                <tr>
+                    <td>Harvesting</td>
+                    <td>100</td>
+                    <td>20</td>
+                    <td>Healthy</td>
+                    <td>2023-10-20</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="d-flex">
+        <button class="btn btn-primary mr-2">Export as CSV</button>
+        <button class="btn btn-secondary">Export as PDF</button>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Line Chart for Growth Tracking
+        const growthCtx = document.getElementById('growthChart').getContext('2d');
+        const growthChart = new Chart(growthCtx, {
+            type: 'line',
+            data: {
+                labels: ['Germination', 'Vegetative', 'Flowering', 'Ripening', 'Harvesting'],
+                datasets: [{
+                    label: 'Plant Height (cm)',
+                    data: [10, 25, 50, 75, 100],
+                    backgroundColor: 'rgba(0, 123, 255, 0.2)',
+                    borderColor: 'rgba(0, 123, 255, 1)',
+                    borderWidth: 2,
+                    fill: true
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Bar Chart for Health Status
+        const healthCtx = document.getElementById('healthChart').getContext('2d');
+        const healthChart = new Chart(healthCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Germination', 'Vegetative', 'Flowering', 'Ripening', 'Harvesting'],
+                datasets: [{
+                    label: 'Health Status',
+                    data: [5, 5, 5, 4, 5], // 5 being Healthy, 4 Slight Stress
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 5
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
